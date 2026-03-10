@@ -10,6 +10,7 @@ class StatutsFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+
         $statuts = [
             'Identifié',
             'Approché',
