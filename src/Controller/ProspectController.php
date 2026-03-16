@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
-#[Route('/', name: 'prospect_')]
+#[Route('/api', name: 'prospect_')]
 class ProspectController extends AbstractController
 {
     /**
@@ -20,9 +20,8 @@ class ProspectController extends AbstractController
     public function listProspect(ProspectRepository $prospectRepository): JsonResponse
     {
         $prospect = $prospectRepository->findAll();
-        dd($prospect);
 
-        return $this->json($prospect);
+        return $this->json($prospect, 200, [], ['groups'=>['prospect:read']]);
 
     }
 
@@ -42,6 +41,7 @@ class ProspectController extends AbstractController
         $prospect->setLastname('Doe');
         $prospect->setEntreprise('TechNova');
         $prospect->setEmail('john.doe@example.com');
+        
 
         // tell Doctrine you want to (eventually) save the Prospect (no queries yet)
         $entityManager->persist($prospect);
@@ -58,7 +58,6 @@ class ProspectController extends AbstractController
     {
 
         $prospect = $prospectRepository->find($id);
-        dd($prospect);
 
         return $this->json($prospect);
 

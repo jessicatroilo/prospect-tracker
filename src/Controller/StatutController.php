@@ -6,10 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\StatutsRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class StatutController extends AbstractController
 {
-    #[Route('/statuts', name: 'create_statut')]
+    #[Route('/api/statuts', name: 'create_statut')]
     public function createStatut(EntityManagerInterface $entityManager): Response
     {
         $statut = new Statuts();
@@ -22,5 +24,14 @@ class StatutController extends AbstractController
         $entityManager->flush();
 
         return new Response('Saved new statut with id '.$statut->getId());
+    }
+
+    #[Route('/api/liste-des-statuts', name: 'statut_list')]
+    public function listProspect(StatutsRepository $statutsRepository): JsonResponse
+    {
+        $statut = $statutsRepository->findAll();
+
+        return $this->json($statut, 200, [], ['groups'=>['prospect:read']]);
+
     }
 }

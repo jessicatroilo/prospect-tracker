@@ -6,6 +6,7 @@ use App\Entity\Statuts;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+
 class StatutsFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
@@ -20,10 +21,12 @@ class StatutsFixtures extends Fixture
             'Signé'
         ];
 
-        foreach ($statuts as $label) {
+        foreach ($statuts as $index => $label) {
             $statut = new Statuts();
             $statut->setPrincipal($label);
+
             $manager->persist($statut);
+
         }
 
         $manager->flush();
