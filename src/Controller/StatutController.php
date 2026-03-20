@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class StatutController extends AbstractController
 {
-    #[Route('/api/statuts', name: 'create_statut')]
+    #[Route('/api/statuts', name: 'create_statut', methods: 'POST')]
     public function createStatut(EntityManagerInterface $entityManager): Response
     {
         $statut = new Statuts();
@@ -26,7 +26,7 @@ class StatutController extends AbstractController
         return new Response('Saved new statut with id '.$statut->getId());
     }
 
-    #[Route('/api/liste-des-statuts', name: 'statut_list')]
+    #[Route('/api/liste-des-statuts', name: 'statut_list', methods: 'GET')]
     public function listProspect(StatutsRepository $statutsRepository): JsonResponse
     {
         $statut = $statutsRepository->findAll();
