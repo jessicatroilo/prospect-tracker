@@ -28,12 +28,17 @@ security:
             # switch_user: true
             json_login:
                 # api_login is a route we will create below
-                check_path: api_login
+                check_path: /api/login
+                username_path: username
+                password_path: password
+            jwt: true
 
     # Note: Only the *first* matching rule is applied
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

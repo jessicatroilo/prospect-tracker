@@ -16,7 +16,7 @@ class ProspectController extends AbstractController
     /**
      * Méthode pour afficher la liste de tout les prospects
      */
-    #[Route('/liste-des-prospects', name: 'list')]
+    #[Route('/liste-des-prospects', name: 'list', methods: 'GET')]
     public function listProspect(ProspectRepository $prospectRepository): JsonResponse
     {
         $prospect = $prospectRepository->findAll();
@@ -33,7 +33,7 @@ class ProspectController extends AbstractController
      * TODO: Ajouter une interface utilisateur pour saisir les données du prospect au lieu de les coder en dur dans la méthode
      * TODO: Ajouter des tests pour cette méthode afin de s'assurer qu'elle fonctionne correctement et gère les cas d'erreur de manière appropriée
      */
-    #[Route('/créer-un-nouveau-prospect', name: 'create')]
+    #[Route('/créer-un-nouveau-prospect', name: 'create', methods: 'POST')]
     public function createProspect(EntityManagerInterface $entityManager): Response
     {
         $prospect = new Prospect();
@@ -41,7 +41,7 @@ class ProspectController extends AbstractController
         $prospect->setLastname('Doe');
         $prospect->setEntreprise('TechNova');
         $prospect->setEmail('john.doe@example.com');
-        
+
 
         // tell Doctrine you want to (eventually) save the Prospect (no queries yet)
         $entityManager->persist($prospect);
@@ -53,7 +53,7 @@ class ProspectController extends AbstractController
     }
 
 
-    #[Route('/prospect/{id}', name: 'show')]
+    #[Route('/prospect/{id}', name: 'show',  methods: 'GET')]
     public function showProspect(ProspectRepository $prospectRepository, int $id): Response
     {
 
@@ -63,7 +63,7 @@ class ProspectController extends AbstractController
 
     }
 
-    #[Route('/modifier-un-prospect/{id}', name: 'update')] //TODO:ajout du requirement ID
+    #[Route('/modifier-un-prospect/{id}', name: 'update', methods: 'PUT')] //TODO:ajout du requirement ID
     public function updateProspect (ProspectRepository $prospectRepository, int $id, EntityManagerInterface $entityManager): Response
     {
         //TODO: Faire le code pour modifier un prospect précis
@@ -91,7 +91,7 @@ class ProspectController extends AbstractController
         return $this->json($prospect);
     }
 
-    #[Route('/supprimer-un-prospect/{id}', name: 'delete')] //TODO:ajout du requirement ID
+    #[Route('/supprimer-un-prospect/{id}', name: 'delete', methods: 'DELETE')] //TODO:ajout du requirement ID
     public function deleteProspect (EntityManagerInterface $entityManager, int $id, ProspectRepository $prospectRepository): Response
     {
         //TODO: Gestion d'erreur
