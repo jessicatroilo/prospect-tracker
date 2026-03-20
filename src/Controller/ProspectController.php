@@ -21,6 +21,10 @@ class ProspectController extends AbstractController
     {
         $prospect = $prospectRepository->findAll();
 
+        //gestion des erreurs en reponse json
+
+
+
         return $this->json($prospect, 200, [], ['groups'=>['prospect:read']]);
 
     }
@@ -29,7 +33,6 @@ class ProspectController extends AbstractController
      * Méthode pour créer un nouveau prospect et l'enregistrer dans la base de données
      *  TODO: Ajouter une validation des données avant de les enregistrer
      * TODO: Ajouter une gestion des erreurs pour les cas où l'enregistrement échoue
-     * TODO: Ajouter une redirection vers une page de confirmation ou de liste des prospects après l'enregistrement
      * TODO: Ajouter une interface utilisateur pour saisir les données du prospect au lieu de les coder en dur dans la méthode
      * TODO: Ajouter des tests pour cette méthode afin de s'assurer qu'elle fonctionne correctement et gère les cas d'erreur de manière appropriée
      */
