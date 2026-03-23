@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\HttpException;
 
 
 #[Route('/api', name: 'prospect_')]
@@ -21,20 +22,13 @@ class ProspectController extends AbstractController
     {
         $prospect = $prospectRepository->findAll();
 
-        //gestion des erreurs en reponse json
-
-
-
         return $this->json($prospect, 200, [], ['groups'=>['prospect:read']]);
 
     }
 
     /**
      * Méthode pour créer un nouveau prospect et l'enregistrer dans la base de données
-     *  TODO: Ajouter une validation des données avant de les enregistrer
-     * TODO: Ajouter une gestion des erreurs pour les cas où l'enregistrement échoue
-     * TODO: Ajouter une interface utilisateur pour saisir les données du prospect au lieu de les coder en dur dans la méthode
-     * TODO: Ajouter des tests pour cette méthode afin de s'assurer qu'elle fonctionne correctement et gère les cas d'erreur de manière appropriée
+     *
      */
     #[Route('/créer-un-nouveau-prospect', name: 'create', methods: 'POST')]
     public function createProspect(EntityManagerInterface $entityManager): Response
@@ -62,6 +56,12 @@ class ProspectController extends AbstractController
 
         $prospect = $prospectRepository->find($id);
 
+        if (!$prospect) {
+            throw $this->createNotFoundException(
+                'Pas de prospect trouvé'.$id
+            );
+        };
+
         return $this->json($prospect);
 
     }
@@ -69,19 +69,13 @@ class ProspectController extends AbstractController
     #[Route('/modifier-un-prospect/{id}', name: 'update', methods: 'PUT')] //TODO:ajout du requirement ID
     public function updateProspect (ProspectRepository $prospectRepository, int $id, EntityManagerInterface $entityManager): Response
     {
-        //TODO: Faire le code pour modifier un prospect précis
-        //TODO: Gestion d'erreur
-        //TODO: Validation des données
-        //TODO: lien avec le formulaire
-
-
         $prospect = $prospectRepository->find($id);
 
         if (!$prospect) {
             throw $this->createNotFoundException(
                 'Pas de prospect trouvé'.$id
             );
-        }
+        };
 
         $prospect->setFirstname('Jane');
         $prospect->setLastname('Love');
@@ -89,7 +83,6 @@ class ProspectController extends AbstractController
         $prospect->setEmail('john.doe@example.com');
 
         $entityManager->flush();
-        dd($prospect);
 
         return $this->json($prospect);
     }
@@ -97,15 +90,14 @@ class ProspectController extends AbstractController
     #[Route('/supprimer-un-prospect/{id}', name: 'delete', methods: 'DELETE')] //TODO:ajout du requirement ID
     public function deleteProspect (EntityManagerInterface $entityManager, int $id, ProspectRepository $prospectRepository): Response
     {
-        //TODO: Gestion d'erreur
-        //TODO: Validation des données
 
         $prospect = $prospectRepository->find($id);
 
+        //gestion d'erreurs
         if (!$prospect) {
-        throw $this->createNotFoundException(
-            'Pas de prospect trouvé'
-        );
+            throw $this->createNotFoundException(
+                'Pas de prospect trouvé'
+            );
         };
 
         $entityManager->remove($prospect);

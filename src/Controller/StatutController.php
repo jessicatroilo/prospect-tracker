@@ -9,9 +9,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\StatutsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+#[Route('/api', name: 'statut_')]
 class StatutController extends AbstractController
 {
-    #[Route('/api/statuts', name: 'create_statut', methods: 'POST')]
+    #[Route('/créer-un-nouveau-statut', name: 'create', methods: 'POST')]
     public function createStatut(EntityManagerInterface $entityManager): Response
     {
         $statut = new Statuts();
@@ -26,7 +27,7 @@ class StatutController extends AbstractController
         return new Response('Saved new statut with id '.$statut->getId());
     }
 
-    #[Route('/api/liste-des-statuts', name: 'statut_list', methods: 'GET')]
+    #[Route('/liste-des-statuts', name: 'list', methods: 'GET')]
     public function listProspect(StatutsRepository $statutsRepository): JsonResponse
     {
         $statut = $statutsRepository->findAll();
